@@ -1,0 +1,31 @@
+service: tushar-notifications
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+plugins:
+    
+    - serverless-offline
+
+custom:
+  s3Sync:
+    - bucketName: tushar-notifications
+      localDir: UploadData
+
+functions:
+  getUser:
+    handler: lambdas/getUser.handler
+    events:
+      - http:
+          path: lambdas/get-user/
+          method: post
+          cors : true
+
+resources:
+  Resources:
+    DemoBucketUpload:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: tushar-notifications
